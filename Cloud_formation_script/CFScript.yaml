@@ -1,0 +1,646 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  InfraStructureName:
+    Type: String
+    Default: HelloWorld
+    MinLength: 1
+    MaxLength: 50
+    AllowedPattern: ^[a-zA-Z0-9]*$
+  RedirectURL1:
+    Type: String
+    MinLength: 1
+    MaxLength: 100
+    AllowedPattern: ^(https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}?(\/.*)?
+  RedirectURL2:
+    Type: String
+    MinLength: 1
+    MaxLength: 100
+    AllowedPattern: ^(https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}?(\/.*)?
+Metadata:
+  'AWS::CloudFormation::Designer':
+    1c86a5e6-7497-4b83-bba6-0429c1cb0b9d:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 710
+        'y': 450
+      z: 1
+      embeds: []
+    0cfd4444-6586-4ab7-b91e-b3e6ef77bb45:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 780
+        'y': 570
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 1c86a5e6-7497-4b83-bba6-0429c1cb0b9d
+    b1767e62-d079-4710-9a27-1d445e441834:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 690
+        'y': 570
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 1c86a5e6-7497-4b83-bba6-0429c1cb0b9d
+    36b9e992-e279-4479-b229-0837ed15496a:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 710
+        'y': 330
+      z: 1
+      embeds: []
+    998a5ca5-2d3a-4e33-adb9-0591afa616bc:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 860
+        'y': 330
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 36b9e992-e279-4479-b229-0837ed15496a
+    dd2225c7-e861-4653-b6e0-4998d8ee2f6a:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 520
+        'y': 410
+      z: 1
+      embeds: []
+    444dd898-7ff1-4738-910a-de80c1f94ab7:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 440
+        'y': 290
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - dd2225c7-e861-4653-b6e0-4998d8ee2f6a
+    4299412b-bd97-4603-a0ea-ccf6b0e6d0e2:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 400
+        'y': 410
+      z: 1
+      embeds: []
+    8ef2a336-97be-4eed-9f03-edc30eb900eb:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 190
+        'y': 450
+      z: 1
+      embeds: []
+    35565426-9ee2-4f4d-83fb-9ce35efb9fa0:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 190
+        'y': 570
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 8ef2a336-97be-4eed-9f03-edc30eb900eb
+    8ef2a336-97be-4eed-9f03-edc30eb900ea:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 90
+        'y': 450
+      z: 1
+      embeds: []
+    8d8320ec-32b6-4c2e-97c6-af483a08ee08:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 140
+        'y': 320
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 4299412b-bd97-4603-a0ea-ccf6b0e6d0e2
+    35565426-9ee2-4f4d-83fb-9ce35efb9fa9:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 90
+        'y': 570
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - 8ef2a336-97be-4eed-9f03-edc30eb900ea
+    444dd898-7ff1-4738-910a-de80c1f94ab8:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 520
+        'y': 290
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - dd2225c7-e861-4653-b6e0-4998d8ee2f6a
+    444dd898-7ff1-4738-910a-de80c1f94ab6:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 610
+        'y': 290
+      z: 1
+      embeds: []
+      isassociatedwith:
+        - dd2225c7-e861-4653-b6e0-4998d8ee2f6a
+Resources:
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Sub ${InfraStructureName}_LambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1c86a5e6-7497-4b83-bba6-0429c1cb0b9d
+  LogPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: !Sub ${InfraStructureName}_Log_Policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource: 'arn:aws:logs:*:*:*'
+      Roles:
+        - !Ref LambdaExecutionRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0cfd4444-6586-4ab7-b91e-b3e6ef77bb45
+  LambdaPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: !Sub ${InfraStructureName}_Lamba_Policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: lambdaSkillSQS
+            Effect: Allow
+            Action:
+              - 'sqs:DeleteMessage'
+              - 'sqs:GetQueueUrl'
+              - 'sqs:ReceiveMessage'
+              - 'sqs:SendMessage'
+            Resource:
+              - 'arn:aws:sqs:*:*:*'
+          - Sid: lambdaSkillCognito
+            Effect: Allow
+            Action:
+              - 'cognito-idp:GetUser'
+            Resource: !GetAtt
+              - CognitoUserPool
+              - Arn
+      Roles:
+        - !Ref LambdaExecutionRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: b1767e62-d079-4710-9a27-1d445e441834
+  LambdaFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub ${InfraStructureName}_Lamba_Function
+      Code:
+        S3Bucket: awsskills
+        S3Key: lambda_function.zip
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt
+        - LambdaExecutionRole
+        - Arn
+      Runtime: python2.7
+      Timeout: 20
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 36b9e992-e279-4479-b229-0837ed15496a
+  AlexaSkillFunctionPermissions:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: alexa-appkit.amazon.com
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 998a5ca5-2d3a-4e33-adb9-0591afa616bc
+  CognitoUserPool:
+    Type: 'AWS::Cognito::UserPool'
+    Properties:
+      MfaConfiguration: 'OFF'
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: Client
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+        - AttributeDataType: String
+          Name: Client0
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+        - AttributeDataType: String
+          Name: Client1
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+        - AttributeDataType: String
+          Name: Client2
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+        - AttributeDataType: String
+          Name: Client3
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+        - AttributeDataType: String
+          Name: email
+          Mutable: 'true'
+          StringAttributeConstraints:
+            MaxLength: '256'
+            MinLength: '1'
+          Required: 'true'
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: 'true'
+          RequireNumbers: 'true'
+          RequireSymbols: 'true'
+          RequireUppercase: 'true'
+      UserPoolName: !Sub ${InfraStructureName}_UserPool
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: dd2225c7-e861-4653-b6e0-4998d8ee2f6a
+  SkillHandling:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: SkillHandling
+      SupportedIdentityProviders: 
+        - 'COGNITO'
+      ExplicitAuthFlows:
+        - ADMIN_NO_SRP_AUTH
+      GenerateSecret: false
+      ReadAttributes:
+        - address
+        - birthdate
+        - email
+        - email_verified
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - phone_number_verified
+        - picture
+        - preferred_username
+        - profile
+        - zoneinfo
+        - updated_at
+        - website
+        - 'custom:Client'
+        - 'custom:Client0'
+        - 'custom:Client1'
+        - 'custom:Client2'
+        - 'custom:Client3'
+      RefreshTokenValidity: 30
+      UserPoolId: !Ref CognitoUserPool
+      WriteAttributes:
+        - email
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 444dd898-7ff1-4738-910a-de80c1f94ab6
+  SkillLinking:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: SkillLinking
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: 
+        - code
+      AllowedOAuthScopes: 
+        - 'openid'
+        - 'aws.cognito.signin.user.admin'
+        - 'profile'
+      SupportedIdentityProviders: 
+        - 'COGNITO'      
+      CallbackURLs:
+        - !Sub ${RedirectURL1}
+        - !Sub ${RedirectURL2}
+      LogoutURLs:
+        - !Sub ${RedirectURL1}
+        - !Sub ${RedirectURL2}
+      ExplicitAuthFlows:
+        - ADMIN_NO_SRP_AUTH
+      GenerateSecret: true
+      ReadAttributes:
+        - address
+        - birthdate
+        - email
+        - email_verified
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - phone_number_verified
+        - picture
+        - preferred_username
+        - profile
+        - zoneinfo
+        - updated_at
+        - website
+        - 'custom:Client'
+        - 'custom:Client0'
+        - 'custom:Client1'
+        - 'custom:Client2'
+        - 'custom:Client3'
+      RefreshTokenValidity: 30
+      UserPoolId: !Ref CognitoUserPool
+      WriteAttributes:
+        - address
+        - birthdate
+        - email
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - picture
+        - preferred_username
+        - profile
+        - zoneinfo
+        - updated_at
+        - website
+        - 'custom:Client'
+        - 'custom:Client0'
+        - 'custom:Client1'
+        - 'custom:Client2'
+        - 'custom:Client3'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 444dd898-7ff1-4738-910a-de80c1f94ab8
+  SkillClient:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: SkillClient
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: 
+        - code
+        - implicit
+      AllowedOAuthScopes: 
+        - 'email'
+        - 'openid'
+        - 'aws.cognito.signin.user.admin'
+        - 'profile'
+      SupportedIdentityProviders: 
+        - 'COGNITO'
+      CallbackURLs:
+        - !Sub ${RedirectURL1}/
+        - !Sub ${RedirectURL2}/
+      LogoutURLs:
+        - !Sub ${RedirectURL1}/
+        - !Sub ${RedirectURL2}/
+      ExplicitAuthFlows:
+        - ADMIN_NO_SRP_AUTH
+      GenerateSecret: false
+      ReadAttributes:
+        - address
+        - birthdate
+        - email
+        - email_verified
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - phone_number_verified
+        - picture
+        - preferred_username
+        - profile
+        - zoneinfo
+        - updated_at
+        - website
+        - 'custom:Client'
+        - 'custom:Client0'
+        - 'custom:Client1'
+        - 'custom:Client2'
+        - 'custom:Client3'
+      RefreshTokenValidity: 30
+      UserPoolId: !Ref CognitoUserPool
+      WriteAttributes:
+        - address
+        - birthdate
+        - email
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - picture
+        - preferred_username
+        - profile
+        - zoneinfo
+        - updated_at
+        - website
+        - 'custom:Client'
+        - 'custom:Client0'
+        - 'custom:Client1'
+        - 'custom:Client2'
+        - 'custom:Client3'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 444dd898-7ff1-4738-910a-de80c1f94ab7
+  CongitoIdentityPool:
+    Type: 'AWS::Cognito::IdentityPool'
+    Properties:
+      IdentityPoolName: !Sub ${InfraStructureName}_IdentityPool
+      AllowUnauthenticatedIdentities: 'true'
+      CognitoIdentityProviders:
+        - ClientId: !Ref SkillClient
+          ProviderName: !GetAtt
+            - CognitoUserPool
+            - ProviderName
+          ServerSideTokenCheck: 'true'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 4299412b-bd97-4603-a0ea-ccf6b0e6d0e2
+  IDPUnauthRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Sub ${InfraStructureName}_IDPUnauthRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action: 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud': !Ref CongitoIdentityPool
+              'ForAnyValue:StringLike':
+                'cognito-identity.amazonaws.com:amr': unauthenticated
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 8ef2a336-97be-4eed-9f03-edc30eb900ea
+  IDPUnauthPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: VisualEditor0
+            Effect: Allow
+            Action: 'mobileanalytics:PutEvents'
+            Resource: '*'
+          - Sid: VisualEditor1
+            Effect: Allow
+            Action:
+              - 'cognito-idp:AdminInitiateAuth'
+              - 'cognito-idp:GetUser'
+              - 'cognito-idp:AdminRespondToAuthChallenge'
+            Resource: !GetAtt
+              - CognitoUserPool
+              - Arn
+      PolicyName: !Sub ${InfraStructureName}_IDPUnauthPolicy
+      Roles:
+        - !Ref IDPUnauthRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 35565426-9ee2-4f4d-83fb-9ce35efb9fa9
+  IDPAuthRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Sub ${InfraStructureName}_IDPAuthRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action: 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud': !Ref CongitoIdentityPool
+              'ForAnyValue:StringLike':
+                'cognito-identity.amazonaws.com:amr': authenticated
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 8ef2a336-97be-4eed-9f03-edc30eb900eb
+  IDPAuthPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: VisualEditor0
+            Effect: Allow
+            Action: 'mobileanalytics:PutEvents'
+            Resource: '*'
+          - Sid: sqsrulesMasterauth
+            Effect: Allow
+            Action:
+              - 'sqs:DeleteMessage'
+              - 'sqs:GetQueueUrl'
+              - 'sqs:ReceiveMessage'
+              - 'sqs:SendMessage'
+              - 'sqs:PurgeQueue'
+              - 'sqs:CreateQueue'
+              - 'sqs:SetQueueAttributes'
+            Resource:
+              - 'arn:aws:sqs:*:*:*'
+          - Sid: stsrulesMasterauth
+            Effect: Allow
+            Action:
+              - 'sts:AssumeRole'
+            Resource: !GetAtt
+              - IDPAuthRole
+              - Arn
+          - Sid: cognitorulesMasterauth
+            Effect: Allow
+            Action:
+              - 'cognito-idp:AdminInitiateAuth'
+              - 'cognito-idp:GetUser'
+              - 'cognito-idp:AdminCreateUser'
+              - 'cognito-idp:AdminUpdateUserAttributes'
+              - 'cognito-idp:AdminRespondToAuthChallenge'
+            Resource: !GetAtt
+              - CognitoUserPool
+              - Arn
+      PolicyName: !Sub ${InfraStructureName}_IDPAuthPolicy
+      Roles:
+        - !Ref IDPAuthRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 35565426-9ee2-4f4d-83fb-9ce35efb9fa0
+  IDPRoleMapping:
+    Type: 'AWS::Cognito::IdentityPoolRoleAttachment'
+    Properties:
+      IdentityPoolId: !Ref CongitoIdentityPool
+      Roles:
+        authenticated: !GetAtt
+          - IDPAuthRole
+          - Arn
+        unauthenticated: !GetAtt
+          - IDPUnauthRole
+          - Arn
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 8d8320ec-32b6-4c2e-97c6-af483a08ee08
